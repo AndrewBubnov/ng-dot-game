@@ -1,0 +1,19 @@
+<div class="score">
+  <div>Computer : User</div>
+  <div *ngIf="score.winner; else noWinner">
+    <div *ngIf="score.winner === 'Computer'; else userWinner" class="danger rotated-winner">Computer won</div>
+    <ng-template #userWinner class="success rotated-winner">Computer won</ng-template>
+  </div>
+  <ng-template #noWinner>
+    <div class="score-string">
+      <app-score-item [data]="score.computer"></app-score-item>
+      <span>&nbsp;  :  &nbsp;</span>
+      <app-score-item [data]="score.user"></app-score-item>
+<!--      <div class="rotated-winner">{{score.computer}}</div>-->
+<!--      <span>&nbsp;  :  &nbsp;</span>-->
+<!--      <div class="rotated-winner">{{score.user}}</div>-->
+    </div>
+  </ng-template>
+</div>
+
+

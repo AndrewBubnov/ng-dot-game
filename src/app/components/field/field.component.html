@@ -1,0 +1,11 @@
+<button (click)="handleStart()">Start</button>
+<div class="field" (click)="onUserClick($event)">
+  <div *ngFor="let cell of gameField; let idx = index">
+    <app-cell
+      [current]="cell"
+      [cellSize]="cellSize"
+      [id]="idx"
+    ></app-cell>
+  </div>
+</div>
+
