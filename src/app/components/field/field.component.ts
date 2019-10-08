@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, AfterContentChecked } from '@angular/core';
 import {GameService} from '../../services/game.service';
 
 @Component({
@@ -6,7 +6,7 @@ import {GameService} from '../../services/game.service';
   templateUrl: './field.component.html',
   styleUrls: ['./field.component.css']
 })
-export class FieldComponent implements OnInit {
+export class FieldComponent implements AfterContentChecked {
   private field: number;
   private delay: number;
   private cellSize: string;
@@ -17,10 +17,7 @@ export class FieldComponent implements OnInit {
   }
 
   ngOnInit() {
-    const {field, delay} = this.gameService.getPreset()
-    this.field = field;
-    this.delay = delay;
-    this.cellSize = 700 / field - 4 + 'px';
+
   }
 
   handleStart = () => {
@@ -28,5 +25,13 @@ export class FieldComponent implements OnInit {
   }
 
   onUserClick = (e) => this.gameService.onUserClick(e)
+
+  ngAfterContentChecked(): void {
+    this.gameService.fieldStream$.subscribe(data => this.field = data);
+    this.gameService.delayStream$.subscribe(data => this.delay = data);
+
+
+    this.cellSize = 700 / this.field - 4 + 'px';
+  }
 
 }

@@ -15,13 +15,27 @@ export class GameService {
   private delay = 1000;
   public gameField: Array<string> = Array.from({length: this.field * this.field}, v => '');
   private game$: BehaviorSubject<string[]> = new BehaviorSubject(this.gameField);
-  public gameStream$: Observable<string[]> = this.game$.asObservable()
+  public gameStream$: Observable<string[]> = this.game$.asObservable();
   private score$: BehaviorSubject<Score> = new BehaviorSubject(this.score);
-  public scoreStream$: Observable<Score> = this.score$.asObservable()
+  public scoreStream$: Observable<Score> = this.score$.asObservable();
+  private field$: BehaviorSubject<number> = new BehaviorSubject(this.field);
+  public fieldStream$: Observable<number> = this.field$.asObservable();
+  private delay$: BehaviorSubject<number> = new BehaviorSubject(this.delay);
+  public delayStream$: Observable<number> = this.delay$.asObservable();
 
-  getPreset = (): Preset => {
-    return {field: this.field, delay: this.delay}
-  };
+
+  setField = (field) => {
+    this.field = field;
+    this.field$.next(field);
+    const gameField = Array.from({length: this.field * this.field}, v => '');
+    this.gameField = gameField;
+    this.game$.next(gameField);
+  }
+
+  setDelay = (delay) => {
+    this.delay = delay;
+    this.delay$.next(delay);
+  }
 
 
   setGameProcess = () => {
@@ -54,8 +68,8 @@ export class GameService {
   onUserClick = (e) => {
     const id = Number(e.target.id)
     if (id === this.randomIndex && this.gameField[this.randomIndex] !== 'user' && !this.winner){
-      let array = [...this.gameField]
-      array[this.randomIndex] = 'user'
+      let array = [...this.gameField];
+      array[this.randomIndex] = 'user';
       this.gameField = array;
       this.addScore('user')
       this.score$.next(this.score)

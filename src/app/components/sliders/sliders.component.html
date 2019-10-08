@@ -1,0 +1,7 @@
+<p class="slider-label">Field size</p>
+<mat-slider min="4" max="20" step="1" class="slider"
+            [ngModel]="field" (change)="onFieldChange($event)" thumbLabel></mat-slider>
+<p class="slider-label">Delay</p>
+<mat-slider min="700" max="2000" step="100" class="slider"
+            [ngModel]="delay" (change)="onDelayChange($event)" thumbLabel></mat-slider>
+
