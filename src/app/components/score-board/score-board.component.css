@@ -12,6 +12,7 @@
   display: flex;
 }
 .rotated-winner{
+  font-weight: 500;
   animation: rotate-winner .3s
 }
 .success{
