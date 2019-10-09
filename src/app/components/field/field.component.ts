@@ -1,6 +1,8 @@
 import { Component, AfterContentChecked } from '@angular/core';
 import {GameService} from '../../services/game.service';
 
+const width: number = window.innerWidth < 380 ? window.innerWidth * .98 : 700;
+
 @Component({
   selector: 'app-field',
   templateUrl: './field.component.html',
@@ -10,28 +12,23 @@ export class FieldComponent implements AfterContentChecked {
   private field: number;
   private delay: number;
   private cellSize: string;
-  public gameField: Array<string>
+  public gameField: Array<string>;
+  private side: string = width + 'px';
 
   constructor(private gameService: GameService) {
     this.gameService.gameStream$.subscribe(data => this.gameField = data);
   }
 
-  ngOnInit() {
 
-  }
-
-  handleStart = () => {
-    this.gameService.setGameProcess()
-  }
-
-  onUserClick = (e) => this.gameService.onUserClick(e)
+  onUserClick = (e) => this.gameService.onUserClick(e);
 
   ngAfterContentChecked(): void {
-    this.gameService.fieldStream$.subscribe(data => this.field = data);
-    this.gameService.delayStream$.subscribe(data => this.delay = data);
-
-
-    this.cellSize = 700 / this.field - 4 + 'px';
+    this.gameService.presetStream$.subscribe(data => {
+      this.field = data.field;
+      this.delay = data.delay;
+    });
+    this.cellSize = width / this.field - 4 + 'px';
   }
+
 
 }

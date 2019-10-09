@@ -9,7 +9,9 @@ import { Score } from '../../Models/Score';
 })
 export class ScoreBoardComponent {
   public score: Score;
+  public name: string;
   constructor(private gameService: GameService) {
     this.gameService.scoreStream$.subscribe(data => this.score = data);
+    this.gameService.nameStream$.subscribe(data => this.name = data);
   }
 }

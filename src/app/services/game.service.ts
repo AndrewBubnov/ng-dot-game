@@ -10,43 +10,59 @@ import { Preset } from '../Models/Preset';
 export class GameService {
   private randomIndex: number;
   public score: Score = new Score(0, 0);
-  winner: string;
-  private field = 5;
-  private delay = 1000;
-  public gameField: Array<string> = Array.from({length: this.field * this.field}, v => '');
+  public winner: string;
+  private preset = new Preset(5, 1000);
+  public gameField: Array<string> = Array.from({length: 25}, v => '');
+  private name: string;
+  private timeout: any;
+
   private game$: BehaviorSubject<string[]> = new BehaviorSubject(this.gameField);
   public gameStream$: Observable<string[]> = this.game$.asObservable();
   private score$: BehaviorSubject<Score> = new BehaviorSubject(this.score);
   public scoreStream$: Observable<Score> = this.score$.asObservable();
-  private field$: BehaviorSubject<number> = new BehaviorSubject(this.field);
-  public fieldStream$: Observable<number> = this.field$.asObservable();
-  private delay$: BehaviorSubject<number> = new BehaviorSubject(this.delay);
-  public delayStream$: Observable<number> = this.delay$.asObservable();
+  private preset$: BehaviorSubject<Preset> = new BehaviorSubject(this.preset);
+  public presetStream$: Observable<Preset> = this.preset$.asObservable();
+  private name$: BehaviorSubject<string> = new BehaviorSubject(this.name);
+  public nameStream$: Observable<string> = this.name$.asObservable();
 
+  constructor() { }
 
   setField = (field) => {
-    this.field = field;
-    this.field$.next(field);
-    const gameField = Array.from({length: this.field * this.field}, v => '');
+    clearTimeout(this.timeout);
+    this.preset.field = field;
+    const gameField = Array.from({length: field * field}, v => '');
     this.gameField = gameField;
     this.game$.next(gameField);
+    this.score$.next(new Score(0, 0));
+    this.preset$.next(this.preset);
   }
 
   setDelay = (delay) => {
-    this.delay = delay;
-    this.delay$.next(delay);
+    this.preset.delay = delay;
+    this.preset$.next(this.preset);
+  };
+
+  setPreset = (preset) => {
+    this.setField(preset.field);
+    this.setDelay(preset.delay);
+  };
+
+  setName = (name) => {
+    this.name = name;
+    this.name$.next(name);
   }
 
 
   setGameProcess = () => {
-    const size: number = this.field * this.field;
+    const { field, delay } = this.preset;
+    const size: number = field * field;
     const {computer, user} = this.score;
     if (computer <= size / 2 && user <= size / 2) {
-      setTimeout(() => {
-        const array = [...this.gameField]
+      this.timeout = setTimeout(() => {
+        const array = [...this.gameField];
         if (this.gameField[this.randomIndex] === 'current') {
           array[this.randomIndex] = 'computer';
-          this.addScore('computer')
+          this.addScore('computer');
           this.score$.next(this.score)
         }
         let index = null;
@@ -59,35 +75,39 @@ export class GameService {
         array[index] = 'current';
         this.randomIndex = index;
         this.gameField = array;
-        this.game$.next(this.gameField)
+        this.game$.next(this.gameField);
         this.setGameProcess();
-      }, this.delay);
+      }, delay);
     }
   };
 
   onUserClick = (e) => {
-    const id = Number(e.target.id)
+    const id = Number(e.target.id);
     if (id === this.randomIndex && this.gameField[this.randomIndex] !== 'user' && !this.winner){
       let array = [...this.gameField];
       array[this.randomIndex] = 'user';
       this.gameField = array;
-      this.addScore('user')
+      this.game$.next(this.gameField);
+      this.addScore('user');
       this.score$.next(this.score)
     }
-  }
+  };
+
 
   setWinner = () => {
-    this.winner = this.score.user > this.score.computer ? 'User' : 'Computer';
+    this.winner = this.score.user > this.score.computer ? (this.name ? this.name : 'User') : 'Computer';
     this.score.winner = this.winner
   };
 
   addScore = (player) => {
+    const { field } = this.preset;
     const newScore = this.score[player] + 1
-    this.score = {...this.score, [player]: newScore}
-    if (newScore > this.field * this.field / 2) {
+    this.score = {...this.score, [player]: newScore};
+    if (newScore > field * field / 2) {
+      clearTimeout(this.timeout);
       this.setWinner()
     }
-  }
+  };
 
-  constructor() { }
+
 }

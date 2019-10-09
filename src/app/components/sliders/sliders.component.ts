@@ -14,7 +14,6 @@ export class SlidersComponent {
 
   onFieldChange = (e) => {
     this.gameService.setField(e.value);
-    console.log('this.field = ', this.field)
   };
 
   onDelayChange = (e) => {
