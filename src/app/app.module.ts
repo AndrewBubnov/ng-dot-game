@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
-import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import { MatFormFieldModule, MatInputModule, MatSelectModule, MatOptionModule, MatSnackBarModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { FieldComponent } from './components/field/field.component';
 import { CellComponent } from './components/cell/cell.component';
@@ -36,7 +36,8 @@ import { HttpClientModule } from "@angular/common/http";
     FormsModule,
     HttpClientModule,
     MatSelectModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

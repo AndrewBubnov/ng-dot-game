@@ -11,6 +11,13 @@
 .start-button{
   height: 40px;
 }
+::ng-deep .red-snackbar{
+  background: #e65c5c;
+  color: #fff;
+}
+::ng-deep .red-snackbar button{
+  color: #fff;
+}
 @media screen and (max-width: 380px) {
   .control-unit-container {
     height: 115px;

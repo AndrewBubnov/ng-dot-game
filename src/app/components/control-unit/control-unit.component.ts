@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../services/game.service';
 import { ServerService } from '../../services/server.service';
+import {Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 
 
@@ -9,21 +12,30 @@ interface ServerPreset {
   viewValue: string;
 }
 
+const serverError = "Something wrong's happened with presets: "
+
 @Component({
   selector: 'app-control-unit',
   templateUrl: './control-unit.component.html',
   styleUrls: ['./control-unit.component.css']
 })
 export class ControlUnitComponent implements OnInit {
-  private presetsArray: ServerPreset[];
+  private presetsArray$: Observable<ServerPreset[]>;
   private desktop: boolean = window.innerWidth > 380;
+  private startLabel: string;
 
-  constructor(private gameService: GameService, private serverService: ServerService) { }
+
+  constructor(private gameService: GameService, private serverService: ServerService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.serverService.getPresets().subscribe(data => {
-      this.presetsArray = Object.entries(data).map(entry => ({value: entry[1], viewValue: entry[0]}))
-    })
+    this.presetsArray$ = this.serverService.getPresets().pipe(
+      catchError(err => {
+        this.openSnackBar(err)
+        return throwError(err);
+      })
+    );
+
+    this.gameService.gameLabelStream$.subscribe(data => this.startLabel = data);
   }
 
   handlePreset = (preset) => {
@@ -32,12 +44,16 @@ export class ControlUnitComponent implements OnInit {
 
 
   handleStart = () => {
-
     this.gameService.setGameProcess()
   }
 
   handleInput = (value) => {
     this.gameService.setName(value);
+  }
+
+  openSnackBar = (err) => {
+    const errorMessage = `${serverError}: ${err.statusText}`;
+    this.snackBar.open(errorMessage, "Ok",{duration: 5000, panelClass: ['red-snackbar']})
   }
 
 }

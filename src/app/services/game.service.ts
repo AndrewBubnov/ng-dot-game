@@ -15,6 +15,7 @@ export class GameService {
   public gameField: Array<string> = Array.from({length: 25}, v => '');
   private name: string;
   private timeout: any;
+  private gameLabel: string = 'Play';
 
   private game$: BehaviorSubject<string[]> = new BehaviorSubject(this.gameField);
   public gameStream$: Observable<string[]> = this.game$.asObservable();
@@ -24,6 +25,8 @@ export class GameService {
   public presetStream$: Observable<Preset> = this.preset$.asObservable();
   private name$: BehaviorSubject<string> = new BehaviorSubject(this.name);
   public nameStream$: Observable<string> = this.name$.asObservable();
+  private gameLabel$: BehaviorSubject<string> = new BehaviorSubject(this.gameLabel);
+  public gameLabelStream$: Observable<string> = this.gameLabel$.asObservable();
 
   constructor() { }
 
@@ -50,7 +53,7 @@ export class GameService {
   setName = (name) => {
     this.name = name;
     this.name$.next(name);
-  }
+  };
 
 
   setGameProcess = () => {
@@ -96,7 +99,8 @@ export class GameService {
 
   setWinner = () => {
     this.winner = this.score.user > this.score.computer ? (this.name ? this.name : 'User') : 'Computer';
-    this.score.winner = this.winner
+    this.score.winner = this.winner;
+    this.gameLabel$.next('Play again')
   };
 
   addScore = (player) => {

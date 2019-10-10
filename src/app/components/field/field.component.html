@@ -1,5 +1,5 @@
 <div class="field" (click)="onUserClick($event)" [ngStyle]="{'width': side, 'height': side}">
-  <div *ngFor="let cell of gameField; let idx = index">
+  <div *ngFor="let cell of (gameField$ | async); let idx = index">
     <app-cell
       [current]="cell"
       [cellSize]="cellSize"

@@ -1,5 +1,5 @@
 <div class="control-unit-container">
-  <button (click)="handleStart()" class="start-button">Start</button>
+  <button (click)="handleStart()" class="start-button">{{startLabel}}</button>
   <mat-form-field>
     <input matInput type="text" placeholder="Name" (input)="handleInput($event.target.value)"/>
   </mat-form-field>
@@ -7,7 +7,7 @@
     <mat-form-field>
       <mat-label>Select preset</mat-label>
       <mat-select (selectionChange)="handlePreset($event.value)">
-        <mat-option *ngFor="let preset of presetsArray" [value]="preset.value">
+        <mat-option *ngFor="let preset of (presetsArray$ | async)" [value]="preset.value">
           {{preset.viewValue}}
         </mat-option>
       </mat-select>

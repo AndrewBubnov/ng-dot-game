@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ServerPresets } from '../Models/ServerPresets';
+import {map} from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -21,5 +22,9 @@ export class ServerService {
 
   getPresets = () => {
     return this.http.get<ServerPresets>(presetUrl)
+      .pipe(
+        map(data => Object.entries(data)),
+          map(data => data.map(entry => ({value: entry[1], viewValue: entry[0].slice(0, -4) + ' mode'})))
+      )
   }
 }
