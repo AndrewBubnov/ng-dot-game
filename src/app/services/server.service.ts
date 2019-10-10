@@ -9,9 +9,9 @@ const httpOptions = {
     'Content-Type': 'application/json'
   })
 };
-const presetUrl = 'https://dot-game-api.herokuapp.com/api/presets'
-const winnerUrl = 'https://dot-game-api.herokuapp.com/api/winner'
-const deleteUrl = 'https://dot-game-api.herokuapp.com/api/delete'
+const presetUrl = 'https://dot-game-api.herokuapp.com/api/presets';
+const winnerUrl = 'https://dot-game-api.herokuapp.com/api/winner';
+const deleteUrl = 'https://dot-game-api.herokuapp.com/api/delete';
 
 @Injectable({
   providedIn: 'root'
