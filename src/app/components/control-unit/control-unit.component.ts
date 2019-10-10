@@ -21,9 +21,8 @@ const serverError = "Something wrong's happened with presets: "
 })
 export class ControlUnitComponent implements OnInit {
   private presetsArray$: Observable<ServerPreset[]>;
+  private startLabel: Observable<string>;
   private desktop: boolean = window.innerWidth > 380;
-  private startLabel: string;
-
 
   constructor(private gameService: GameService, private serverService: ServerService, private snackBar: MatSnackBar) { }
 
@@ -34,22 +33,17 @@ export class ControlUnitComponent implements OnInit {
         return throwError(err);
       })
     );
-
-    this.gameService.gameLabelStream$.subscribe(data => this.startLabel = data);
+    this.startLabel = this.gameService.gameLabelStream$;
   }
 
-  handlePreset = (preset) => {
-    this.gameService.setPreset(preset)
-  };
+  handlePreset = (preset) => (this.gameService.setPreset(preset));
 
 
-  handleStart = () => {
-    this.gameService.setGameProcess()
-  }
+  handleStart = () => (this.gameService.setGameProcess());
 
-  handleInput = (value) => {
-    this.gameService.setName(value);
-  }
+
+  handleInput = (value) => (this.gameService.setName(value));
+
 
   openSnackBar = (err) => {
     const errorMessage = `${serverError}: ${err.statusText}`;

@@ -1,5 +1,5 @@
 <div class="control-unit-container">
-  <button (click)="handleStart()" class="start-button">{{startLabel}}</button>
+  <button (click)="handleStart()" class="start-button">{{startLabel | async}}</button>
   <mat-form-field>
     <input matInput type="text" placeholder="Name" (input)="handleInput($event.target.value)"/>
   </mat-form-field>

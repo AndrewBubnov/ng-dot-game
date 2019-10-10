@@ -1,1 +1,8 @@
-<div class="leader-board"></div>
+<div class="leader-board">
+  <div *ngFor="let leader of (leaderBoard$ | async)">
+    <div class="leader-board-item">
+      <p class="record">Winner: {{leader.winner}}</p>
+      <p class="record">Date: {{leader.date}}</p>
+    </div>
+  </div>
+</div>

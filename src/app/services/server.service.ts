@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ServerPresets } from '../Models/ServerPresets';
 import {map} from 'rxjs/operators';
+import {WinnerItem} from '../Models/WinnerItem';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -27,4 +28,7 @@ export class ServerService {
           map(data => data.map(entry => ({value: entry[1], viewValue: entry[0].slice(0, -4) + ' mode'})))
       )
   }
+
+  getWinnerList = () => (this.http.get<WinnerItem[]>(winnerUrl))
+
 }
