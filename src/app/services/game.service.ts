@@ -33,8 +33,7 @@ export class GameService {
   public gameLabelStream$: Observable<string> = this.gameLabel$.asObservable();
   private started$: BehaviorSubject<boolean> = new BehaviorSubject(this.started);
   public startedStream$: Observable<boolean> = this.started$.asObservable();
-  private winner$: BehaviorSubject<WinnerItem> = new BehaviorSubject(null);
-  public winnerStream$: Observable<WinnerItem> = this.winner$.asObservable();
+
 
   constructor(private serverService: ServerService) { }
 
@@ -137,6 +136,5 @@ export class GameService {
       this.setWinner()
     }
   };
-
 
 }
