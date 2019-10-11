@@ -1,5 +1,7 @@
 export class WinnerItem{
-  date: string;
-  winner: string;
-  _id: string;
+  constructor(
+    public winner: string,
+    public date: string,
+    public _id?: string,
+  ){}
 }

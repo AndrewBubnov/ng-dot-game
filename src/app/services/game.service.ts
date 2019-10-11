@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Score } from '../Models/Score';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Preset } from '../Models/Preset';
+import {ServerService} from './server.service';
+import {WinnerItem} from '../Models/WinnerItem';
+import {dateTime} from '../utils/utils';
 
 
 @Injectable({
@@ -16,6 +19,7 @@ export class GameService {
   private name: string;
   private timeout: any;
   private gameLabel: string = 'Play';
+  private started: boolean = false;
 
   private game$: BehaviorSubject<string[]> = new BehaviorSubject(this.gameField);
   public gameStream$: Observable<string[]> = this.game$.asObservable();
@@ -27,17 +31,18 @@ export class GameService {
   public nameStream$: Observable<string> = this.name$.asObservable();
   private gameLabel$: BehaviorSubject<string> = new BehaviorSubject(this.gameLabel);
   public gameLabelStream$: Observable<string> = this.gameLabel$.asObservable();
+  private started$: BehaviorSubject<boolean> = new BehaviorSubject(this.started);
+  public startedStream$: Observable<boolean> = this.started$.asObservable();
+  private winner$: BehaviorSubject<WinnerItem> = new BehaviorSubject(null);
+  public winnerStream$: Observable<WinnerItem> = this.winner$.asObservable();
 
-  constructor() { }
+  constructor(private serverService: ServerService) { }
 
   setField = (field) => {
     clearTimeout(this.timeout);
     this.preset.field = field;
-    const gameField = Array.from({length: field * field}, v => '');
-    this.gameField = gameField;
-    this.game$.next(gameField);
-    this.score$.next(new Score(0, 0));
     this.preset$.next(this.preset);
+    this.resetGame();
   }
 
   setDelay = (delay) => {
@@ -53,6 +58,23 @@ export class GameService {
   setName = (name) => {
     this.name = name;
     this.name$.next(name);
+  };
+
+  setStartGame = () => {
+    this.resetGame();
+    this.setGameProcess();
+    this.started$.next(true);
+    this.gameLabel$.next('Playing');
+  }
+
+  resetGame = () => {
+    const { field } = this.preset;
+    const gameField = Array.from({length: field * field}, v => '');
+    this.gameField = gameField;
+    this.game$.next(gameField);
+    const initialScore: Score = new Score(0, 0);
+    this.score = initialScore;
+    this.score$.next(initialScore);
   };
 
 
@@ -98,9 +120,12 @@ export class GameService {
 
 
   setWinner = () => {
+    this.started$.next(false);
     this.winner = this.score.user > this.score.computer ? (this.name ? this.name : 'User') : 'Computer';
     this.score.winner = this.winner;
-    this.gameLabel$.next('Play again')
+    this.gameLabel$.next('Play again');
+    const winner = new WinnerItem(this.winner, dateTime());
+    this.serverService.setWinner(winner);
   };
 
   addScore = (player) => {

@@ -1,6 +1,6 @@
 <div class="leader-board">
   <div *ngFor="let leader of (leaderBoard$ | async)">
-    <div class="leader-board-item">
+    <div class="leader-board-item" (click)="onDelete(leader._id)">
       <p class="record">Winner: {{leader.winner}}</p>
       <p class="record">Date: {{leader.date}}</p>
     </div>

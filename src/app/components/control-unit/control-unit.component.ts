@@ -22,6 +22,7 @@ const serverError = "Something wrong's happened with presets: "
 export class ControlUnitComponent implements OnInit {
   private presetsArray$: Observable<ServerPreset[]>;
   private startLabel: Observable<string>;
+  private started: boolean = false;
   private desktop: boolean = window.innerWidth > 380;
 
   constructor(private gameService: GameService, private serverService: ServerService, private snackBar: MatSnackBar) { }
@@ -34,12 +35,13 @@ export class ControlUnitComponent implements OnInit {
       })
     );
     this.startLabel = this.gameService.gameLabelStream$;
+    this.gameService.startedStream$.subscribe(data => this.started = data);
   }
 
   handlePreset = (preset) => (this.gameService.setPreset(preset));
 
 
-  handleStart = () => (this.gameService.setGameProcess());
+  handleStart = () => (this.gameService.setStartGame());
 
 
   handleInput = (value) => (this.gameService.setName(value));
