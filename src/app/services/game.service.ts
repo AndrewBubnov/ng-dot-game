@@ -21,19 +21,12 @@ export class GameService {
   private gameLabel: string = 'Play';
   private started: boolean = false;
 
-  private game$: BehaviorSubject<string[]> = new BehaviorSubject(this.gameField);
-  public gameStream$: Observable<string[]> = this.game$.asObservable();
-  private score$: BehaviorSubject<Score> = new BehaviorSubject(this.score);
-  public scoreStream$: Observable<Score> = this.score$.asObservable();
-  private preset$: BehaviorSubject<Preset> = new BehaviorSubject(this.preset);
-  public presetStream$: Observable<Preset> = this.preset$.asObservable();
-  private name$: BehaviorSubject<string> = new BehaviorSubject(this.name);
-  public nameStream$: Observable<string> = this.name$.asObservable();
-  private gameLabel$: BehaviorSubject<string> = new BehaviorSubject(this.gameLabel);
-  public gameLabelStream$: Observable<string> = this.gameLabel$.asObservable();
-  private started$: BehaviorSubject<boolean> = new BehaviorSubject(this.started);
-  public startedStream$: Observable<boolean> = this.started$.asObservable();
-
+  public game$: BehaviorSubject<string[]> = new BehaviorSubject(this.gameField);
+  public score$: BehaviorSubject<Score> = new BehaviorSubject(this.score);
+  public preset$: BehaviorSubject<Preset> = new BehaviorSubject(this.preset);
+  public name$: BehaviorSubject<string> = new BehaviorSubject(this.name);
+  public gameLabel$: BehaviorSubject<string> = new BehaviorSubject(this.gameLabel);
+  public started$: BehaviorSubject<boolean> = new BehaviorSubject(this.started);
 
   constructor(private serverService: ServerService) { }
 

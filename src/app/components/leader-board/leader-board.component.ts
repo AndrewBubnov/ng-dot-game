@@ -18,7 +18,7 @@ export class LeaderBoardComponent implements OnInit {
 
   ngOnInit() {
     this.serverService.getWinnerList().subscribe(data => this.serverService.setWinnerList(data));
-    this.leaderBoard$ = this.serverService.winnersStream$;
+    this.leaderBoard$ = this.serverService.winners$;
   }
 
   onDelete = (_id) => {

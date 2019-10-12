@@ -16,14 +16,14 @@ export class FieldComponent implements AfterContentChecked {
   private side: string = width + 'px';
 
   constructor(private gameService: GameService) {
-    this.gameField$ = this.gameService.gameStream$;
+    this.gameField$ = this.gameService.game$;
   }
 
 
   onUserClick = (e) => this.gameService.onUserClick(e);
 
   ngAfterContentChecked(): void {
-    this.gameService.presetStream$.subscribe(data => {
+    this.gameService.preset$.subscribe(data => {
       this.field = data.field;
     });
     this.cellSize = width / this.field - 4 + 'px';

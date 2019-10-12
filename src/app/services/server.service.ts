@@ -26,8 +26,7 @@ const deleteUrl = 'http://localhost:5000/api/delete';
 export class ServerService {
   private winnerList: WinnerItem[] = [];
 
-  private winners$: BehaviorSubject<WinnerItem[]> = new BehaviorSubject(this.winnerList);
-  public winnersStream$: Observable<WinnerItem[]> = this.winners$.asObservable();
+  public winners$: BehaviorSubject<WinnerItem[]> = new BehaviorSubject(this.winnerList);
 
   constructor(private http: HttpClient) { }
 

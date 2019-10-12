@@ -34,8 +34,8 @@ export class ControlUnitComponent implements OnInit {
         return throwError(err);
       })
     );
-    this.startLabel = this.gameService.gameLabelStream$;
-    this.gameService.startedStream$.subscribe(data => this.started = data);
+    this.startLabel = this.gameService.gameLabel$;
+    this.gameService.started$.subscribe(data => this.started = data);
   }
 
   handlePreset = (preset) => (this.gameService.setPreset(preset));

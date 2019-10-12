@@ -11,7 +11,7 @@ export class ScoreBoardComponent {
   public score: Score;
   public name: string;
   constructor(private gameService: GameService) {
-    this.gameService.scoreStream$.subscribe(data => this.score = data);
-    this.gameService.nameStream$.subscribe(data => this.name = data);
+    this.gameService.score$.subscribe(data => this.score = data);
+    this.gameService.name$.subscribe(data => this.name = data);
   }
 }
