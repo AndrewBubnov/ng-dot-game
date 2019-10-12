@@ -12,13 +12,10 @@ const httpOptions = {
   })
 };
 
-// const presetUrl = 'https://dot-game-api.herokuapp.com/api/presets';
-// const winnerUrl = 'https://dot-game-api.herokuapp.com/api/winner';
-// const deleteUrl = 'https://dot-game-api.herokuapp.com/api/delete';
+const presetUrl = 'https://dot-game-api.herokuapp.com/api/presets';
+const winnerUrl = 'https://dot-game-api.herokuapp.com/api/winner';
+const deleteUrl = 'https://dot-game-api.herokuapp.com/api/delete';
 
-const presetUrl = 'http://localhost:5000/api/presets';
-const winnerUrl = 'http://localhost:5000/api/winner';
-const deleteUrl = 'http://localhost:5000/api/delete';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +50,6 @@ export class ServerService {
         this.winners$.next(this.winnerList);
       })
   };
-
 
 
   deleteWinner = (_id) => {
