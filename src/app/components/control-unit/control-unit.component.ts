@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../services/game.service';
 import { ServerService } from '../../services/server.service';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import { MatSnackBar } from "@angular/material/snack-bar";
-
+import { Observable } from 'rxjs';
 
 
 interface ServerPreset {
