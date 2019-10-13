@@ -66,7 +66,8 @@ export class ServerService {
           this.error$.next(errorMessage);
           return throwError(err);
         })
-      ).subscribe(data => {
+      )
+      .subscribe(data => {
         this.winnerList.push(data);
         this.winners$.next(this.winnerList);
       })
@@ -75,6 +76,13 @@ export class ServerService {
 
   deleteWinner = (_id) => {
     return this.http.delete<WinnerItem>(`${deleteUrl}/${_id}`)
+      .pipe(
+        catchError(err => {
+          const errorMessage = err.message || err.text
+          this.error$.next(errorMessage);
+          return throwError(err);
+        })
+      )
       .subscribe(data => {
       this.winnerList = this.winnerList.filter(item => item._id !== data._id);
       this.winners$.next(this.winnerList);
