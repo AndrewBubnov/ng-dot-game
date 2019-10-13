@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { ServerPresets } from '../Models/ServerPresets';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {WinnerItem} from '../Models/WinnerItem';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {IdObject} from '../Models/IdObject';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
+
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -22,8 +22,9 @@ const deleteUrl = 'https://dot-game-api.herokuapp.com/api/delete';
 })
 export class ServerService {
   private winnerList: WinnerItem[] = [];
-
   public winners$: BehaviorSubject<WinnerItem[]> = new BehaviorSubject(this.winnerList);
+  public error$: BehaviorSubject<string> = new BehaviorSubject(null);
+
 
   constructor(private http: HttpClient) { }
 
@@ -31,11 +32,25 @@ export class ServerService {
     return this.http.get<ServerPresets>(presetUrl)
       .pipe(
         map(data => Object.entries(data)),
-          map(data => data.map(entry => ({value: entry[1], viewValue: entry[0].slice(0, -4) + ' mode'})))
-      )
-  }
+        map(data => data.map(entry => ({value: entry[1], viewValue: entry[0].slice(0, -4) + ' mode'}))),
+        catchError(err => {
+          const errorMessage = err.message || err.text
+          this.error$.next(errorMessage);
+          return throwError(err);
+        })
+      );
+  };
 
-  getWinnerList = (): Observable<WinnerItem[]> => (this.http.get<WinnerItem[]>(winnerUrl));
+  getWinnerList = (): Observable<WinnerItem[]> => {
+    return this.http.get<WinnerItem[]>(winnerUrl)
+      .pipe(
+        catchError(err => {
+          const errorMessage = err.message || err.text
+          this.error$.next(errorMessage);
+          return throwError(err);
+        })
+      )
+  };
 
 
   setWinnerList = (winnerList: WinnerItem[]): void => {
@@ -45,7 +60,13 @@ export class ServerService {
 
   setWinner = (winner) => {
     return this.http.post<WinnerItem>(winnerUrl, winner, httpOptions)
-      .subscribe(data => {
+      .pipe(
+        catchError(err => {
+          const errorMessage = err.message || err.text
+          this.error$.next(errorMessage);
+          return throwError(err);
+        })
+      ).subscribe(data => {
         this.winnerList.push(data);
         this.winners$.next(this.winnerList);
       })

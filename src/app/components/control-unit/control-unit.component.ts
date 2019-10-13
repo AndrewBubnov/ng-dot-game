@@ -12,7 +12,7 @@ interface ServerPreset {
   viewValue: string;
 }
 
-const serverError = "Something wrong's happened with presets: "
+const serverError = "Something wrong's happened with presets: ";
 
 @Component({
   selector: 'app-control-unit',
@@ -28,12 +28,7 @@ export class ControlUnitComponent implements OnInit {
   constructor(private gameService: GameService, private serverService: ServerService, private snackBar: MatSnackBar) { }
 
   ngOnInit() {
-    this.presetsArray$ = this.serverService.getPresets().pipe(
-      catchError(err => {
-        this.openSnackBar(err)
-        return throwError(err);
-      })
-    );
+    this.presetsArray$ = this.serverService.getPresets();
     this.startLabel = this.gameService.gameLabel$;
     this.gameService.started$.subscribe(data => this.started = data);
   }
@@ -45,11 +40,5 @@ export class ControlUnitComponent implements OnInit {
 
 
   handleInput = (value) => (this.gameService.setName(value));
-
-
-  openSnackBar = (err) => {
-    const errorMessage = `${serverError}: ${err.statusText}`;
-    this.snackBar.open(errorMessage, "Ok",{duration: 5000, panelClass: ['red-snackbar']})
-  }
 
 }

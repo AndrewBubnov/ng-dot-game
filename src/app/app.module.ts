@@ -14,6 +14,8 @@ import { LeaderBoardComponent } from './components/leader-board/leader-board.com
 import { ControlUnitComponent } from './components/control-unit/control-unit.component';
 import { FieldContainerComponent } from './components/field-container/field-container.component';
 import { HttpClientModule } from "@angular/common/http";
+import { ErrorSnackbarComponent } from './components/error-snackbar/error-snackbar.component';
+
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { HttpClientModule } from "@angular/common/http";
     SlidersComponent,
     LeaderBoardComponent,
     ControlUnitComponent,
-    FieldContainerComponent
+    FieldContainerComponent,
+    ErrorSnackbarComponent,
   ],
   imports: [
     BrowserModule,

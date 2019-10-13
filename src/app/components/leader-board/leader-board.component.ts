@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {ServerService} from '../../services/server.service';
-import { GameService } from '../../services/game.service';
 import { WinnerItem } from '../../Models/WinnerItem';
 import { Observable } from 'rxjs';
 
@@ -13,12 +12,13 @@ export class LeaderBoardComponent implements OnInit {
   leaderBoard$: Observable<WinnerItem[]>;
   _id: string;
 
-  constructor(private serverService: ServerService, private gameService: GameService) {
+  constructor(private serverService: ServerService) {
   }
 
   ngOnInit() {
     this.serverService.getWinnerList().subscribe(data => this.serverService.setWinnerList(data));
     this.leaderBoard$ = this.serverService.winners$;
+    // this.serverService.error$.subscribe(data => console.log('Error: ', data))
   }
 
   onDelete = (_id) => {
