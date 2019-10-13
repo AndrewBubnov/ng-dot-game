@@ -7,8 +7,8 @@ import { GameService } from '../../services/game.service';
   styleUrls: ['./sliders.component.css']
 })
 export class SlidersComponent {
-  private field = 5;
-  private delay = 1000;
+  public field = 5;
+  public delay = 1000;
   constructor(private gameService: GameService) { }
 
 

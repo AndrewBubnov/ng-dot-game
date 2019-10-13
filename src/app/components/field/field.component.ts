@@ -10,10 +10,10 @@ const width: number = window.innerWidth < 380 ? window.innerWidth * .98 : 700;
   styleUrls: ['./field.component.css']
 })
 export class FieldComponent implements AfterContentChecked {
-  private field: number;
-  private cellSize: string;
+  public field: number;
+  public cellSize: string;
   public gameField$: Observable<string[]>
-  private side: string = width + 'px';
+  public side: string = width + 'px';
 
   constructor(private gameService: GameService) {
     this.gameField$ = this.gameService.game$;

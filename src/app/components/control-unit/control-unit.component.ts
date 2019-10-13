@@ -12,7 +12,7 @@ interface ServerPreset {
   viewValue: string;
 }
 
-const serverError = "Something wrong's happened with presets: ";
+
 
 @Component({
   selector: 'app-control-unit',
@@ -20,12 +20,12 @@ const serverError = "Something wrong's happened with presets: ";
   styleUrls: ['./control-unit.component.css']
 })
 export class ControlUnitComponent implements OnInit {
-  private presetsArray$: Observable<ServerPreset[]>;
-  private startLabel: Observable<string>;
-  private started: boolean = false;
-  private desktop: boolean = window.innerWidth > 380;
+  public presetsArray$: Observable<ServerPreset[]>;
+  public startLabel: Observable<string>;
+  public started: boolean = false;
+  public desktop: boolean = window.innerWidth > 380;
 
-  constructor(private gameService: GameService, private serverService: ServerService, private snackBar: MatSnackBar) { }
+  constructor(private gameService: GameService, private serverService: ServerService) { }
 
   ngOnInit() {
     this.presetsArray$ = this.serverService.getPresets();
